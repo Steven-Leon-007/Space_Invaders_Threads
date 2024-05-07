@@ -1,5 +1,7 @@
 package com.estivman.space_invaders.pojos;
 
+import java.awt.Image;
+
 public class Martian {
     private int xPos;
     private int yPos;
@@ -9,8 +11,17 @@ public class Martian {
     private DirectionsEnum direction;
     private boolean isAlive;
     private boolean isOutside;
+    private Image image;
 
+    
     public Martian() {
+    }
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public boolean isOutside() {

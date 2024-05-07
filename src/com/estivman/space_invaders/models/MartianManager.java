@@ -2,6 +2,8 @@ package com.estivman.space_invaders.models;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.swing.ImageIcon;
+
 import com.estivman.space_invaders.pojos.DirectionsEnum;
 import com.estivman.space_invaders.pojos.Martian;
 
@@ -15,13 +17,22 @@ public class MartianManager {
 
     public MartianManager(int containerWidth, int containerHeight) {
         this.martian = new Martian();
-        this.containerWidth = containerWidth;
-        this.containerHeight = containerHeight;
         this.martian.setAlive(true);
         this.martian.setOutside(false);
         randomSize();
         randomSpeed();
+        setImage();
         randomStartPosition(containerWidth, containerHeight);
+    }
+
+    public void setSize(int width, int height) {
+        this.containerWidth = width;
+        this.containerHeight = height;
+    }
+
+    private void setImage() {
+        ImageIcon imageIcon = new ImageIcon("src/com/estivman/space_invaders/assets/YEPge.png");
+        this.martian.setImage(imageIcon.getImage());
     }
 
     private void randomStartPosition(int width, int height) {
@@ -32,10 +43,10 @@ public class MartianManager {
 
         int randomX;
         if (isLeft) {
-            randomX = martian.getWidth();
+            randomX = 0 - martian.getWidth();
             martian.setDirection(DirectionsEnum.RIGHT);
         } else {
-            randomX = width - martian.getWidth();
+            randomX = width;
             martian.setDirection(DirectionsEnum.LEFT);
         }
 
@@ -46,7 +57,7 @@ public class MartianManager {
     private void randomSize() {
         // Definir el rango de tamaño deseado
         int minSize = 20;
-        int maxSize = 80;
+        int maxSize = 60;
 
         // Generar un tamaño aleatorio dentro del rango
         int randomSize = ThreadLocalRandom.current().nextInt(minSize, maxSize + 1);
@@ -73,12 +84,40 @@ public class MartianManager {
             newPositionX = currentPositionX + increment;
         }
 
-        if (newPositionX <= 0 || newPositionX >= containerWidth) {
+        if (newPositionX <= -this.martian.getWidth() || newPositionX >= containerWidth) {
+            
             martian.setOutside(true);
         } else {
             martian.setxPos(newPositionX);
         }
 
+    }
+
+    public void stopThread() {
+        this.isThreadRunning = false;
+    }
+
+    public void threadMartians() {
+        isThreadRunning = true;
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while (isThreadRunning) {
+                    try {
+                        Thread.sleep(martian.getSpeed());
+                        move();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
+    }
+
+    public Martian getMartian() {
+        return martian;
     }
 
 }

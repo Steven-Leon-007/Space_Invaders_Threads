@@ -1,6 +1,9 @@
 package com.estivman.space_invaders.presenters;
 
+import java.util.List;
+
 import com.estivman.space_invaders.models.ModelManager;
+import com.estivman.space_invaders.pojos.Martian;
 import com.estivman.space_invaders.presenters.ContractGame.Model;
 import com.estivman.space_invaders.presenters.ContractGame.View;
 import com.estivman.space_invaders.views.Dashboard;
@@ -42,6 +45,26 @@ public class PresenterManager implements ContractGame.Presenter {
         if (model != null) {
             model.setGamePanelSize(width, height);
         }
+    }
+
+    @Override
+    public List<Martian> getMartians() {
+        return model.getMartians();
+    }
+
+    @Override
+    public void startMartianThreads() {
+        model.startMartianThreads();
+    }
+
+    @Override
+    public void stopMartianThreads() {
+        model.stopMartianThreads();
+    }
+
+    @Override
+    public void addNewMartian(){
+        model.addNewMartian();
     }
 
 }

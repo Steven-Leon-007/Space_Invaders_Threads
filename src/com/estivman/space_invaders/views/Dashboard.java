@@ -11,7 +11,7 @@ import com.estivman.space_invaders.presenters.ContractGame.Presenter;
 
 public class Dashboard extends JFrame implements ContractGame.View {
 
-    private ContractGame.Presenter presenter;
+    public ContractGame.Presenter presenter;
     private GamePanel gamePanel;
 
     private StatsPanel statsPanel;
@@ -43,6 +43,7 @@ public class Dashboard extends JFrame implements ContractGame.View {
 
     @Override
     public void run() {
+        gamePanel.threadPaintMartians();
         setVisible(true);
     }
 
@@ -51,8 +52,8 @@ public class Dashboard extends JFrame implements ContractGame.View {
     }
 
     private void initializePanels() {
-        gamePanel = new GamePanel();
-        statsPanel = new StatsPanel();
+        gamePanel = new GamePanel(this);
+        statsPanel = new StatsPanel(this);
 
         // Agrega los paneles al JFrame
         add(gamePanel, BorderLayout.CENTER);
