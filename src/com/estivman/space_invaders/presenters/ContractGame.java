@@ -3,6 +3,7 @@ package com.estivman.space_invaders.presenters;
 import java.util.List;
 
 import com.estivman.space_invaders.pojos.Martian;
+import com.estivman.space_invaders.pojos.Shooter;
 
 public interface ContractGame {
 
@@ -10,9 +11,11 @@ public interface ContractGame {
         public void setPresenter(Presenter presenter);
         public void setGamePanelSize(int width, int height);
         public List<Martian> getMartians();
-        public void startMartianThreads();
-        public void stopMartianThreads();
         public void addNewMartian();
+        public void initShooter(int width, int height);
+        public void moveToRight();
+        public void moveToLeft();
+        public Shooter getShooter();
     }
 
     public interface View {
@@ -27,10 +30,12 @@ public interface ContractGame {
         public void run();
 
         public List<Martian> getMartians();
-        public void startMartianThreads();
-        public void stopMartianThreads();
-        public void addNewMartian();
-        
+        public void initShooter(int width, int height);
+        public void addNewMartian();   
+        public void moveToRight();
+        public void moveToLeft();   
+        public Shooter getShooter();
+
 
     }
 }

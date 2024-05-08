@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.estivman.space_invaders.models.ModelManager;
 import com.estivman.space_invaders.pojos.Martian;
+import com.estivman.space_invaders.pojos.Shooter;
 import com.estivman.space_invaders.presenters.ContractGame.Model;
 import com.estivman.space_invaders.presenters.ContractGame.View;
 import com.estivman.space_invaders.views.Dashboard;
@@ -27,19 +28,17 @@ public class PresenterManager implements ContractGame.Presenter {
         Dashboard dashboard = new Dashboard();
         dashboard.setPresenter(this);
         this.view = dashboard;
-
         ModelManager modelManager = new ModelManager();
         modelManager.setPresenter(this);
         this.model = modelManager;
-
+        initShooter(dashboard.getWidth(), dashboard.getHeight());        
     }
-
+    
     @Override
     public void run() {
         makeMVP();
         view.run();
     }
-
     @Override
     public void setGamePanelSize(int width, int height) {
         if (model != null) {
@@ -53,18 +52,28 @@ public class PresenterManager implements ContractGame.Presenter {
     }
 
     @Override
-    public void startMartianThreads() {
-        model.startMartianThreads();
-    }
-
-    @Override
-    public void stopMartianThreads() {
-        model.stopMartianThreads();
-    }
-
-    @Override
-    public void addNewMartian(){
+    public synchronized void addNewMartian() {
         model.addNewMartian();
+    }
+
+    @Override
+    public void moveToRight() {
+        model.moveToRight();
+    }
+
+    @Override
+    public void moveToLeft() {
+        model.moveToLeft();
+    }
+
+    @Override
+    public Shooter getShooter() {
+        return model.getShooter();
+    }
+
+    @Override
+    public void initShooter(int width, int height) {
+        model.initShooter(width, height);
     }
 
 }

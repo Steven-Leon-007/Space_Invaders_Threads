@@ -44,8 +44,12 @@ public class Dashboard extends JFrame implements ContractGame.View {
     @Override
     public void run() {
         gamePanel.threadPaintMartians();
+        gamePanel.initShooter();
+        gamePanel.shooterMoves();
         setVisible(true);
     }
+
+
 
     public GamePanel getGamePanel() {
         return gamePanel;
@@ -58,6 +62,7 @@ public class Dashboard extends JFrame implements ContractGame.View {
         // Agrega los paneles al JFrame
         add(gamePanel, BorderLayout.CENTER);
         add(statsPanel, BorderLayout.NORTH);
+
     }
 
     private void windowResizeListener() {
@@ -72,5 +77,7 @@ public class Dashboard extends JFrame implements ContractGame.View {
 
         });
     }
+
+
 
 }

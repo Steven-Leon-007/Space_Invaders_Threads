@@ -1,24 +1,17 @@
 package com.estivman.space_invaders.pojos;
 
+import java.awt.Image;
+
 public class Shooter {
     private int xPosShooter;
     private int yPosShooter;
     private int widthShooter;
-    private String moveLeftKey;
-    private String moveRightKey;
-    private String shootKey;
+    private int heightShooter;
+
+    private Image image;
+
 
     public Shooter() {
-    }
-
-    public Shooter(int xPosShooter, int yPosShooter, int widthShooter, String moveLeftKey, String moveRightKey,
-            String shootKey) {
-        this.xPosShooter = xPosShooter;
-        this.yPosShooter = yPosShooter;
-        this.widthShooter = widthShooter;
-        this.moveLeftKey = moveLeftKey;
-        this.moveRightKey = moveRightKey;
-        this.shootKey = shootKey;
     }
 
     public int getxPosShooter() {
@@ -45,28 +38,21 @@ public class Shooter {
         this.widthShooter = widthShooter;
     }
 
-    public String getMoveLeftKey() {
-        return moveLeftKey;
+    public Image getImage() {
+        return image;
     }
 
-    public void setMoveLeftKey(String moveLeftKey) {
-        this.moveLeftKey = moveLeftKey;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
-    public String getMoveRightKey() {
-        return moveRightKey;
+    public int getHeightShooter() {
+        return heightShooter;
     }
 
-    public void setMoveRightKey(String moveRightKey) {
-        this.moveRightKey = moveRightKey;
+    public void setHeightShooter(int heightShooter) {
+        this.heightShooter = heightShooter;
     }
 
-    public String getShootKey() {
-        return shootKey;
-    }
-
-    public void setShootKey(String shootKey) {
-        this.shootKey = shootKey;
-    }
 
 }

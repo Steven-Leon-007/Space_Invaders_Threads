@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.estivman.space_invaders.pojos.Martian;
+import com.estivman.space_invaders.pojos.Shooter;
 import com.estivman.space_invaders.presenters.ContractGame;
 import com.estivman.space_invaders.presenters.ContractGame.Presenter;
 
@@ -12,12 +13,14 @@ public class ModelManager implements ContractGame.Model {
     private ContractGame.Presenter presenter;
     private int gamePanelWidth;
     private int gamePanelHeight;
-    private boolean firstRun = false;
+    private boolean firstRun = true;
     private List<MartianManager> martiansManagerList;
-
+    private ShooterManager shooterManager;
 
     public ModelManager() {
         martiansManagerList = new ArrayList<MartianManager>();
+        addMartianThread();
+
     }
 
     @Override
@@ -29,16 +32,15 @@ public class ModelManager implements ContractGame.Model {
     public void setGamePanelSize(int width, int height) {
         this.gamePanelWidth = width;
         this.gamePanelHeight = height;
-
-        if (!firstRun) {
+        if (firstRun) {
             createMartians();
-            firstRun = true;
+            firstRun = false;
         }
+    }
 
-        for (MartianManager martianManager : martiansManagerList) {
-            martianManager.setSize(width, height);
-        }
-
+    @Override
+    public void initShooter(int width, int height){
+        shooterManager = new ShooterManager(width, height);
     }
 
     public void createMartians() {
@@ -51,6 +53,7 @@ public class ModelManager implements ContractGame.Model {
     @Override
     public List<Martian> getMartians() {
         List<Martian> martians = new ArrayList<Martian>();
+
         for (MartianManager martianManager : martiansManagerList) {
             martians.add(martianManager.getMartian());
         }
@@ -58,25 +61,42 @@ public class ModelManager implements ContractGame.Model {
     }
 
     @Override
-    public void startMartianThreads() {
-        for (MartianManager martianManager : martiansManagerList) {
-            martianManager.threadMartians();
-        }
-    }
-
-    @Override
-    public void stopMartianThreads() {
-        for (MartianManager martianManager : martiansManagerList) {
-            martianManager.stopThread();
-        }
-    }
-
-    @Override
-    public synchronized void addNewMartian() {
+    public void addNewMartian() {
         MartianManager newMartianManager = new MartianManager(gamePanelWidth, gamePanelHeight);
         martiansManagerList.add(newMartianManager);
-        System.out.println(martiansManagerList.size());
     }
-    
+
+    public void addMartianThread() {
+
+        Thread addThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    addNewMartian();
+                }
+            }
+        });
+        addThread.start();
+    }
+
+    @Override
+    public void moveToRight() {
+        shooterManager.moveToRight();
+    }
+
+    @Override
+    public void moveToLeft() {
+        shooterManager.moveToLeft();
+    }
+
+    @Override
+    public Shooter getShooter() {
+        return shooterManager.getShooter();
+    }
 
 }

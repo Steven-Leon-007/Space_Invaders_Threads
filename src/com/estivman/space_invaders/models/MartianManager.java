@@ -16,6 +16,8 @@ public class MartianManager {
     private int containerHeight;
 
     public MartianManager(int containerWidth, int containerHeight) {
+        this.containerWidth = containerWidth;
+        this.containerHeight = containerHeight;
         this.martian = new Martian();
         this.martian.setAlive(true);
         this.martian.setOutside(false);
@@ -23,32 +25,28 @@ public class MartianManager {
         randomSpeed();
         setImage();
         randomStartPosition(containerWidth, containerHeight);
-    }
-
-    public void setSize(int width, int height) {
-        this.containerWidth = width;
-        this.containerHeight = height;
+        threadMartians();
     }
 
     private void setImage() {
-        ImageIcon imageIcon = new ImageIcon("src/com/estivman/space_invaders/assets/YEPge.png");
+        ImageIcon imageIcon = new ImageIcon("src/com/estivman/space_invaders/assets/pixel-art-ufo.png");
         this.martian.setImage(imageIcon.getImage());
     }
 
     private void randomStartPosition(int width, int height) {
-        // Calcular la mitad de la altura
         int halfHeight = height / 2;
         boolean isLeft = ThreadLocalRandom.current().nextBoolean();
         int randomY = ThreadLocalRandom.current().nextInt(0, halfHeight + 1 - martian.getHeight());
 
         int randomX;
         if (isLeft) {
-            randomX = 0 - martian.getWidth();
-            martian.setDirection(DirectionsEnum.RIGHT);
+        randomX = 0 - martian.getWidth();
+        martian.setDirection(DirectionsEnum.RIGHT);
         } else {
-            randomX = width;
-            martian.setDirection(DirectionsEnum.LEFT);
+        randomX = width;
+        martian.setDirection(DirectionsEnum.LEFT);
         }
+
 
         this.martian.setxPos(randomX);
         this.martian.setyPos(randomY);
@@ -75,22 +73,28 @@ public class MartianManager {
     }
 
     private void move() {
-        int currentPositionX = this.martian.getxPos();
-
-        int newPositionX;
-        if (martian.getDirection() == DirectionsEnum.LEFT) {
-            newPositionX = currentPositionX - increment;
-        } else {
-            newPositionX = currentPositionX + increment;
+        switch (martian.getDirection()) {
+            case LEFT:
+                moveLeft();
+                break;
+            case RIGHT:
+                moveRight();
+                break;
         }
+    }
 
-        if (newPositionX <= -this.martian.getWidth() || newPositionX >= containerWidth) {
-            
+    private void moveLeft() {
+        martian.setxPos(martian.getxPos() - increment);
+        if (martian.getxPos() + martian.getWidth() < 0) {
             martian.setOutside(true);
-        } else {
-            martian.setxPos(newPositionX);
         }
+    }
 
+    private void moveRight() {
+        martian.setxPos(martian.getxPos() + increment);
+        if (martian.getxPos() > containerWidth) {
+            martian.setOutside(true);
+        }
     }
 
     public void stopThread() {
@@ -103,7 +107,7 @@ public class MartianManager {
 
             @Override
             public void run() {
-                while (isThreadRunning) {
+                while (!martian.isOutside()) {
                     try {
                         Thread.sleep(martian.getSpeed());
                         move();
