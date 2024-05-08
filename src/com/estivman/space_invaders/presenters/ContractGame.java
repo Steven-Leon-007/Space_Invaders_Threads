@@ -1,7 +1,9 @@
 package com.estivman.space_invaders.presenters;
 
 import java.util.List;
+import java.util.ArrayList;
 
+import com.estivman.space_invaders.pojos.Bullet;
 import com.estivman.space_invaders.pojos.Martian;
 import com.estivman.space_invaders.pojos.Shooter;
 
@@ -16,6 +18,10 @@ public interface ContractGame {
         public void moveToRight();
         public void moveToLeft();
         public Shooter getShooter();
+        public void shotBullet();
+        public ArrayList<Bullet> getBullets();
+        public int getMartiansDeleted();
+
     }
 
     public interface View {
@@ -35,6 +41,10 @@ public interface ContractGame {
         public void moveToRight();
         public void moveToLeft();   
         public Shooter getShooter();
+        public void shotBullet();
+        public ArrayList<Bullet> getBullets();
+        public int getMartiansDeleted();
+
 
 
     }

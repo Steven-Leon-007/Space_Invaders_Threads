@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
+import com.estivman.space_invaders.pojos.Bullet;
 import com.estivman.space_invaders.pojos.Martian;
 import com.estivman.space_invaders.pojos.Shooter;
 
@@ -20,13 +21,15 @@ public class GamePanel extends JPanel {
     private List<Martian> martians;
     private Shooter shooter;
     private Image backgroundImage;
+    private ArrayList<Bullet> bullets = new ArrayList<>();
 
     public GamePanel(Dashboard dashboard) {
         setBackground(Color.BLACK);
         martians = new ArrayList<Martian>();
         this.dashboard = dashboard;
         backgroundImage = new ImageIcon("src/com/estivman/space_invaders/assets/space_background.png").getImage();
-        setPreferredSize(new Dimension(900, 650)); // Establecer un tamaño preferido
+        threadBullets();
+        setPreferredSize(new Dimension(900, 650));
     }
 
     @Override
@@ -43,6 +46,7 @@ public class GamePanel extends JPanel {
                     try {
                         Thread.sleep(100);
                         martians = dashboard.presenter.getMartians();
+                        dashboard.updateKilledMartians();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -53,7 +57,7 @@ public class GamePanel extends JPanel {
         thread.start();
     }
 
-    public void initShooter(){
+    public void initShooter() {
         shooter = dashboard.presenter.getShooter();
     }
 
@@ -86,12 +90,50 @@ public class GamePanel extends JPanel {
             }
             if (shooter != null) {
                 g.drawImage(shooter.getImage(), shooter.getxPosShooter(), shooter.getyPosShooter(),
-                shooter.getWidthShooter(), shooter.getHeightShooter(), null);
-                
+                        shooter.getWidthShooter(), shooter.getHeightShooter(), null);
+
             }
 
         }
+        for (Bullet bullet : bullets) {
+            if (bullet != null && !bullet.isShouldDelete()) {
+                g.drawImage(bullet.getImage(), bullet.getxPosBullet(), bullet.getyPosBullet(), bullet.getWidth(),
+                        bullet.getHeight(), null);
+            }
+        }
 
+    }
+
+    public void shootBullet() {
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_SPACE) {
+                    dashboard.presenter.shotBullet();
+                }
+            }
+        });
+    }
+
+    private void threadBullets(){
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while(true){
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    bullets = dashboard.presenter.getBullets();
+                    repaint();
+                }
+            }
+
+        });
+        thread.start();
     }
 
 }

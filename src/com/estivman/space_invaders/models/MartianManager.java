@@ -53,15 +53,13 @@ public class MartianManager {
     }
 
     private void randomSize() {
-        // Definir el rango de tamaño deseado
         int minSize = 20;
         int maxSize = 60;
 
-        // Generar un tamaño aleatorio dentro del rango
         int randomSize = ThreadLocalRandom.current().nextInt(minSize, maxSize + 1);
+        
 
-        // Asignar el tamaño aleatorio al marciano
-        this.martian.setWidth(randomSize);
+        this.martian.setWidth(randomSize + 50);
         this.martian.setHeight(randomSize);
     }
 

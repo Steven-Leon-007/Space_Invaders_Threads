@@ -29,7 +29,6 @@ public class Dashboard extends JFrame implements ContractGame.View {
 
         initializePanels();
 
-        // Obtener el tamaño de la pantalla
         int screenWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
         int screenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 
@@ -38,6 +37,7 @@ public class Dashboard extends JFrame implements ContractGame.View {
         int x = (screenWidth - frameWidth) / 2;
         int y = (screenHeight - frameHeight) / 2;
         setBounds(x, y, frameWidth, frameHeight);
+        setResizable(false);
         windowResizeListener();
     }
 
@@ -46,6 +46,8 @@ public class Dashboard extends JFrame implements ContractGame.View {
         gamePanel.threadPaintMartians();
         gamePanel.initShooter();
         gamePanel.shooterMoves();
+        statsPanel.startTimer();
+        gamePanel.shootBullet();
         setVisible(true);
     }
 
@@ -59,7 +61,6 @@ public class Dashboard extends JFrame implements ContractGame.View {
         gamePanel = new GamePanel(this);
         statsPanel = new StatsPanel(this);
 
-        // Agrega los paneles al JFrame
         add(gamePanel, BorderLayout.CENTER);
         add(statsPanel, BorderLayout.NORTH);
 
@@ -78,6 +79,8 @@ public class Dashboard extends JFrame implements ContractGame.View {
         });
     }
 
-
+    public void updateKilledMartians(){
+        statsPanel.initMartiansKilledStats();
+    }
 
 }

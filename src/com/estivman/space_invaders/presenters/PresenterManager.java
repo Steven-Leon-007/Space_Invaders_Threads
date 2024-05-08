@@ -3,11 +3,14 @@ package com.estivman.space_invaders.presenters;
 import java.util.List;
 
 import com.estivman.space_invaders.models.ModelManager;
+import com.estivman.space_invaders.pojos.Bullet;
 import com.estivman.space_invaders.pojos.Martian;
 import com.estivman.space_invaders.pojos.Shooter;
 import com.estivman.space_invaders.presenters.ContractGame.Model;
 import com.estivman.space_invaders.presenters.ContractGame.View;
 import com.estivman.space_invaders.views.Dashboard;
+import java.util.ArrayList;
+
 
 public class PresenterManager implements ContractGame.Presenter {
 
@@ -74,6 +77,21 @@ public class PresenterManager implements ContractGame.Presenter {
     @Override
     public void initShooter(int width, int height) {
         model.initShooter(width, height);
+    }
+
+    @Override
+    public void shotBullet() {
+        model.shotBullet();
+    }
+
+    @Override
+    public ArrayList<Bullet> getBullets() {
+        return model.getBullets();
+    }
+
+    @Override
+    public int getMartiansDeleted() {
+        return model.getMartiansDeleted();
     }
 
 }
